@@ -1,0 +1,31 @@
+* {
+    font-family: monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(227, 233, 241);
+}
+
+#data input {
+    padding: 10px;
+    border-radius: 50px;
+    font-size: 1.5rem;
+}
+
+#data button {
+    background: white;
+    border-radius: 50px;
+    font-size: 1.5rem;
+}
+
+#data button:hover {
+    cursor: pointer;
+}
