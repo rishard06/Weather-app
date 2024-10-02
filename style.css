@@ -29,3 +29,7 @@ body {
 #data button:hover {
     cursor: pointer;
 }
+
+#info {
+    height: 60vh;
+}
