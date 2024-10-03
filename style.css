@@ -33,3 +33,8 @@ body {
 #info {
     height: 60vh;
 }
+
+.gif {
+    width: 400px;
+    height: 200px;
+}

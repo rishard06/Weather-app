@@ -10,12 +10,13 @@ async function getWeather() {
     const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${input.value}/${year}-${month}-${day}/${year}-${month}-${day + 1}?key=HJ4BC9LGMUUFFWA5Z34S9YPT5`, {method: 'GET', mode: 'cors'});
     const data = await response.json();
 
-    const res = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=XBJDt9sF1OODvPDgLD0vl1GnDfvlb3oo&q=${weatherObj.weatherIcon}&limit=1&offset=0&rating=g&lang=en&bundle=messaging_non_clips`, {method: 'GET', mode: 'cors'})
-    const giphy = await res.json();
-    // console.log(giphy.data[0])
-
     processCurrentWeatherData(data);
-    printWeatherData(giphy.data[0].url)
+    
+    const res = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=XBJDt9sF1OODvPDgLD0vl1GnDfvlb3oo&q=${weatherObj.weatherIcon}&limit=10&offset=0&rating=g&lang=en&bundle=messaging_non_clips`, {method: 'GET', mode: 'cors'})
+    const giphy = await res.json();
+    
+    // console.log(giphy.data[0])
+    printWeatherData(giphy.data[0].images.original.url)
 }
 
 searchBtn.addEventListener('click', () => {
@@ -50,18 +51,20 @@ function processCurrentWeatherData(apiResponse) {
 
 function printWeatherData (url) {
     // to make first word capital
-    const cityName = createEl(weatherObj.cityName[0].toUpperCase() + weatherObj.cityName.slice(1));
-    const country = createEl(weatherObj.country);
-    const temp = createEl(weatherObj.temperature);
-    const icon = createEl(weatherObj.weatherIcon, url);
-    const feels = createEl(weatherObj.feelsLike);
-    const description = createEl(weatherObj.weatherDescription);
-    const humid = createEl(weatherObj.humidity);
-    const windspeed = createEl(weatherObj.windSpeed);
-    const visible = createEl(weatherObj.visibility);
-    const press = createEl(weatherObj.pressure);
-
+    const cityCap = weatherObj.cityName[0].toUpperCase() + weatherObj.cityName.slice(1);
+    const cityName = createEl(cityCap, null, "h2", "cityp", "");
+    const country = createEl(weatherObj.country, null, "p", "", "country: ");
+    const temp = createEl(weatherObj.temperature, null, "p", "", "temperature: ");
+    const icon = createEl("", url, "img", "gif");
+    const feels = createEl(weatherObj.feelsLike, null, "p", "", "feels like: ");
+    const description = createEl(weatherObj.weatherDescription, null, "p", "", "description: ");
+    const humid = createEl(weatherObj.humidity, null, "p", "", "humidity: ");
+    const windspeed = createEl(weatherObj.windSpeed, null, "p", "", "wind speed: ");
+    const visible = createEl(weatherObj.visibility, null, "p", "", "visibility: ");
+    const press = createEl(weatherObj.pressure, null, "p", "", "pressure: ");
+    
     const parent = document.querySelector('#info');
+    parent.innerHTML = "";
     parent.appendChild(cityName);
     parent.appendChild(country);
     parent.appendChild(temp);
@@ -74,13 +77,11 @@ function printWeatherData (url) {
     parent.appendChild(press);
 }
 
-function createEl (content, url) {
-    const p = document.createElement('p');
-    p.textContent = `${content}`;
-    
-    const img = document.createElement('img');
-    img.src = `${url}`;
-    console.log(url)
+function createEl (content, url, element, classname, name) {
+    const el = document.createElement(`${element}`);
+    el.textContent = `${name} ${content}`;
+    el.src = `${url}`
+    el.className = `${classname}`;
 
-    return p
+    return el
 }
